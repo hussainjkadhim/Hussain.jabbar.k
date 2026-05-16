@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hussain.jabbar — Mobile Photographer</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #080808;
+  --deep: #0f0f0f;
+  --surface: #161616;
+  --card: #1e1e1e;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.15);
+  --text: #e8e8e8;
+  --muted: #666;
+  --dim: #3a3a3a;
+  --accent: #c8965a;
+  --accent-soft: rgba(200,150,90,0.15);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--black);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 3rem;
+  background: rgba(8,8,8,0);
+  transition: background 0.5s, padding 0.4s;
+}
+
+nav.scrolled {
+  background: rgba(8,8,8,0.92);
+  padding: 0.9rem 3rem;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #fff;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+/* ─── HERO ─── */
+.hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: url('hero.jpg') center center / cover no-repeat;
+  filter: brightness(0.35) saturate(0.8);
+  transform: scale(1.05);
+  animation: slowzoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowzoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.12); }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(8,8,8,0.3) 0%,
+    rgba(8,8,8,0.1) 40%,
+    rgba(8,8,8,0.6) 75%,
+    rgba(8,8,8,1) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: fadeup 1.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-label {
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  animation: fadeup 1.2s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -1px;
+  margin-bottom: 0.5rem;
+  animation: fadeup 1.2s 0.25s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-name .dot { color: var(--accent); }
+
+.hero-sub {
+  font-size: 0.85rem;
+  letter-spacing: 6px;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 3.5rem;
+  animation: fadeup 1.2s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* Category pills */
+.hero-cats {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeup 1.2s 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.cat-pill {
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+  padding: 0.5rem 1.5rem;
+  border-radius: 2px;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.cat-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(200,150,90,0.08);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeup 1.2s 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollpulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollpulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+.scroll-text {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─── SECTIONS COMMON ─── */
+section {
+  padding: 6rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.section-line {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 2rem;
+}
+
+/* ─── ABOUT ─── */
+#حول {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+
+.about-text p {
+  color: rgba(232,232,232,0.6);
+  font-size: 1rem;
+  line-height: 1.9;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  transition: border-color 0.3s;
+}
+
+.stat-box:hover { border-color: var(--accent); }
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-num span { color: var(--accent); font-size: 1.4rem; }
+
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─── GALLERY ─── */
+#المعرض {
+  max-width: 100%;
+  padding: 6rem 3rem;
+  border-top: 1px solid var(--border);
+}
+
+#المعرض .inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.gallery-filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.gf-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 0.45rem 1.25rem;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.gf-btn.active, .gf-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Masonry-style grid */
+.gallery-grid {
+  columns: 3 280px;
+  column-gap: 12px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.gallery-item img {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s;
+  filter: grayscale(20%) brightness(0.9);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: grayscale(0%) brightness(1);
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-item-label {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+}
+
+/* Placeholder cards for demo */
+.placeholder-img {
+  width: 100%;
+  display: block;
+  background: var(--card);
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-img::after {
+  content: '+';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--dim);
+}
+
+/* ─── UPLOAD NOTE ─── */
+.upload-note {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 2px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.upload-note p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.upload-note strong { color: var(--accent); }
+
+/* ─── EQUIPMENT ─── */
+#المعدات {
+  border-top: 1px solid var(--border);
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+.eq-card {
+  background: var(--deep);
+  padding: 2rem 1.75rem;
+  transition: background 0.3s;
+}
+
+.eq-card:hover { background: var(--surface); }
+
+.eq-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  color: var(--accent);
+}
+
+.eq-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.eq-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── FILTERS ─── */
+#الفلاتر {
+  border-top: 1px solid var(--border);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.filter-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.3s;
+}
+
+.filter-card:hover { border-color: var(--border-hover); }
+.filter-card:hover::before { height: 100%; }
+
+.filter-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.filter-app {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.filter-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── CONTACT / FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--deep);
+}
+
+.contact-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 3rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-left .section-tag { margin-bottom: 0.75rem; }
+.contact-left .section-title { margin-bottom: 1rem; }
+
+.contact-left p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-link::after {
+  content: '←';
+  position: absolute;
+  left: 1.5rem;
+  opacity: 0;
+  transition: all 0.3s;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  padding-left: 3rem;
+}
+
+.contact-link:hover::after { opacity: 1; }
+
+.contact-link-icon {
+  font-size: 1.2rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.contact-link-info {
+  flex: 1;
+}
+
+.contact-link-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.contact-link-val {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.contact-link-arrow {
+  color: var(--muted);
+  transition: color 0.3s, transform 0.3s;
+  font-size: 1rem;
+}
+
+.contact-link:hover .contact-link-arrow {
+  color: var(--accent);
+  transform: translateX(-4px);
+}
+
+.location-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-top: 0;
+}
+
+.location-icon { font-size: 1rem; color: var(--accent); }
+.location-text { font-size: 0.85rem; color: var(--muted); }
+.location-text strong { color: var(--text); font-weight: 400; }
+
+/* Footer bar */
+.footer-bar {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-bar-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  color: var(--dim);
+}
+
+.footer-bar-copy {
+  font-size: 0.75rem;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+/* ─── LIGHTBOX ─── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  animation: lbopen 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+@keyframes lbopen {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.lb-close {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 40px; height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  nav.scrolled { padding: 0.8rem 1.5rem; }
+  .nav-links { gap: 1.25rem; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 1px; }
+  section { padding: 4rem 1.5rem; }
+  #حول { grid-template-columns: 1fr; gap: 3rem; }
+  .gallery-grid { columns: 2 140px; }
+  .contact-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+  .footer-bar { padding: 1.25rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  #المعرض { padding: 4rem 1.5rem; }
+}
+
+/* ===== RATING STARS ===== */
+.rating-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 18px 10px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  opacity: 0; transition: opacity 0.3s; z-index: 3;
+}
+.gallery-item:hover .rating-bar { opacity: 1; }
+.stars-row { display: flex; gap: 4px; direction: ltr; }
+.star {
+  font-size: 18px; cursor: pointer;
+  color: rgba(255,255,255,0.3);
+  transition: color 0.15s, transform 0.15s; line-height: 1;
+}
+.star:hover, .star.hov { color: #f5c518; transform: scale(1.2); }
+.star.lit { color: #f5c518; }
+.rating-info { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 0.5px; }
+.lb-rating {
+  position: absolute; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 10;
+}
+.lb-stars { display: flex; gap: 8px; direction: ltr; }
+.lb-star {
+  font-size: 28px; cursor: pointer;
+  color: rgba(255,255,255,0.3);
+  transition: color 0.15s, transform 0.15s;
+}
+.lb-star:hover, .lb-star.hov { color: #f5c518; transform: scale(1.15); }
+.lb-star.lit { color: #f5c518; }
+.lb-rating-info { font-size: 13px; color: rgba(255,255,255,0.7); text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Hussain<span>.</span>jabbar</a>
+  <ul class="nav-links">
+    <li><a href="#حول">حول</a></li>
+    <li><a href="#المعرض">المعرض</a></li>
+    <li><a href="#المعدات">المعدات</a></li>
+    <li><a href="#الفلاتر">الفلاتر</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-label">Portfolio — 2025</p>
+    <h1 class="hero-name">Hussain<span class="dot">.</span>jabbar</h1>
+    <p class="hero-sub">Mobile Photographer</p>
+    <div class="hero-cats">
+      <a class="cat-pill" href="#المعرض">Street Shot</a>
+      <a class="cat-pill" href="#المعرض">Portrait</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="حول">
+  <div class="about-text">
+    <p class="section-tag">حول</p>
+    <h2 class="section-title">مصوّر موبايل<br><em style="font-style:italic;color:var(--muted);font-size:0.8em;">من ذي قار، العراق</em></h2>
+    <div class="section-line"></div>
+    <p>أوثّق لحظات الحياة اليومية بعدسة الموبايل — من أزقة المدينة إلى وجوه الناس، أؤمن إن الكاميرا الأفضل هي اللي معاك دايماً.</p>
+    <p>أسعى دايماً لالتقاط ما يمر عليه الناس بدون ما ينتبهون — ذاك الضوء، تلك النظرة، واللحظة قبل ما تختفي.</p>
+  </div>
+  <div class="about-stats">
+    <div class="stat-box">
+      <div class="stat-num">3<span>+</span></div>
+      <div class="stat-label">سنوات خبرة</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">2</div>
+      <div class="stat-label">تخصصات</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">100<span>%</span></div>
+      <div class="stat-label">موبايل فوتوغرافي</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">IQ</div>
+      <div class="stat-label">ذي قار — العراق</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div id="المعرض" style="border-top: 1px solid var(--border);">
+<div style="max-width:1100px; margin:0 auto; padding: 6rem 3rem;">
+
+  <p class="section-tag">المعرض</p>
+  <h2 class="section-title">الأعمال</h2>
+  <div class="section-line"></div>
+
+  <div class="gallery-filters">
+    <button class="gf-btn active" onclick="filterGallery('all', this)">الكل</button>
+    <button class="gf-btn" onclick="filterGallery('street', this)">Street Shot</button>
+    <button class="gf-btn" onclick="filterGallery('portrait', this)">Portrait</button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('7.dr2-08082022-0001.jpg')">
+      <img src="7.dr2-08082022-0001.jpg" alt="7.dr2-08082022-0001">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-7.dr2-08082022-0001.jpg"></div><div class="rating-info" id="info-7.dr2-08082022-0001.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('7.dr2-25092022-0001.webp')">
+      <img src="7.dr2-25092022-0001.webp" alt="7.dr2-25092022-0001">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-7.dr2-25092022-0001.webp"></div><div class="rating-info" id="info-7.dr2-25092022-0001.webp">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG_20230117_201759.jpg')">
+      <img src="IMG_20230117_201759.jpg" alt="IMG_20230117_201759">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG_20230117_201759.jpg"></div><div class="rating-info" id="info-IMG_20230117_201759.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20220915164851-01.jpg')">
+      <img src="IMG20220915164851-01.jpg" alt="IMG20220915164851-01">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20220915164851-01.jpg"></div><div class="rating-info" id="info-IMG20220915164851-01.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20221009191308.jpg')">
+      <img src="IMG20221009191308.jpg" alt="IMG20221009191308">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20221009191308.jpg"></div><div class="rating-info" id="info-IMG20221009191308.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20221026075312.jpg')">
+      <img src="IMG20221026075312.jpg" alt="IMG20221026075312">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20221026075312.jpg"></div><div class="rating-info" id="info-IMG20221026075312.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20230913183922.jpg')">
+      <img src="IMG20230913183922.jpg" alt="IMG20230913183922">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20230913183922.jpg"></div><div class="rating-info" id="info-IMG20230913183922.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="portrait" onclick="openLightbox('ChatGPT Image May 16, 2026, 06_45_51 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 06_45_51 AM.png" alt="ChatGPT Image May 16, 2026, 06_45_51 AM">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Portrait</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 06_45_51 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 06_45_51 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20231215205701.jpg')">
+      <img src="IMG20231215205701.jpg" alt="IMG20231215205701">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20231215205701.jpg"></div><div class="rating-info" id="info-IMG20231215205701.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG20230113150729.jpg')">
+      <img src="IMG20230113150729.jpg" alt="IMG20230113150729">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG20230113150729.jpg"></div><div class="rating-info" id="info-IMG20230113150729.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('IMG_20220802_193134_545.jpg')">
+      <img src="IMG_20220802_193134_545.jpg" alt="IMG_20220802_193134_545">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-IMG_20220802_193134_545.jpg"></div><div class="rating-info" id="info-IMG_20220802_193134_545.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('ChatGPT Image May 16, 2026, 06_53_03 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 06_53_03 AM.png" alt="ChatGPT Image May 16, 2026, 06_53_03 AM">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 06_53_03 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 06_53_03 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (6).jpg')">
+      <img src="0 (6).jpg" alt="0 (6)">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (6).jpg"></div><div class="rating-info" id="info-0 (6).jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (1).jpg')">
+      <img src="0 (1).jpg" alt="0 (1)">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (1).jpg"></div><div class="rating-info" id="info-0 (1).jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (4).jpg')">
+      <img src="0 (4).jpg" alt="0 (4)">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (4).jpg"></div><div class="rating-info" id="info-0 (4).jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (5).jpg')">
+      <img src="0 (5).jpg" alt="0 (5)">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (5).jpg"></div><div class="rating-info" id="info-0 (5).jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (7).jpg')">
+      <img src="0 (7).jpg" alt="0 (7)">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (7).jpg"></div><div class="rating-info" id="info-0 (7).jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('0 (8)')">
+      <img src="0 (8)" alt="sunset shot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <div class="placeholder-img" style="display:none; aspect-ratio:3/4;">
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-0 (8)"></div><div class="rating-info" id="info-0 (8)">كن أول من يقيّم</div></div>
+    </div>
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623953.jpg')">
+      <img src="1778892623953.jpg" alt="night building">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623953.jpg"></div><div class="rating-info" id="info-1778892623953.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623958.png')">
+      <img src="1778892623958.png" alt="street wall golden hour">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623958.png"></div><div class="rating-info" id="info-1778892623958.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623964.png')">
+      <img src="1778892623964.png" alt="flooded street night">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623964.png"></div><div class="rating-info" id="info-1778892623964.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623956.jpg')">
+      <img src="1778892623956.jpg" alt="bridge silhouette">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623956.jpg"></div><div class="rating-info" id="info-1778892623956.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623969.jpg')">
+      <img src="1778892623969.jpg" alt="birds sky">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623969.jpg"></div><div class="rating-info" id="info-1778892623969.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623961.jpg')">
+      <img src="1778892623961.jpg" alt="rain street night">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623961.jpg"></div><div class="rating-info" id="info-1778892623961.jpg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="street" onclick="openLightbox('1778892623967.jpeg')">
+      <img src="1778892623967.jpeg" alt="old market">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Street Shot</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-1778892623967.jpeg"></div><div class="rating-info" id="info-1778892623967.jpeg">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+
+    <div class="gallery-item" data-cat="portrait" onclick="openLightbox('ChatGPT Image May 16, 2026, 07_20_27 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 07_20_27 AM.png" alt="ChatGPT Image May 16, 2026, 07_20_27 AM.png">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Portrait</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 07_20_27 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 07_20_27 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="portrait" onclick="openLightbox('ChatGPT Image May 16, 2026, 07_24_33 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 07_24_33 AM.png" alt="ChatGPT Image May 16, 2026, 07_24_33 AM.png">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Portrait</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 07_24_33 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 07_24_33 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="portrait" onclick="openLightbox('ChatGPT Image May 16, 2026, 07_17_01 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 07_17_01 AM.png" alt="ChatGPT Image May 16, 2026, 07_17_01 AM.png">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Portrait</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 07_17_01 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 07_17_01 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="portrait" onclick="openLightbox('ChatGPT Image May 16, 2026, 07_18_34 AM.png')">
+      <img src="ChatGPT Image May 16, 2026, 07_18_34 AM.png" alt="ChatGPT Image May 16, 2026, 07_18_34 AM.png">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Portrait</span>
+      <div class="rating-bar" onclick="event.stopPropagation()"><div class="stars-row" id="stars-ChatGPT Image May 16, 2026, 07_18_34 AM.png"></div><div class="rating-info" id="info-ChatGPT Image May 16, 2026, 07_18_34 AM.png">كن أول من يقيّم</div></div>
+    </div>
+    </div>
+
+  </div>
+
+  <!-- Load More Button -->
+  <div style="text-align:center; margin-top: 2.5rem;" id="loadMoreWrap">
+    <button class="gf-btn" id="loadMoreBtn" onclick="loadMore()" style="padding: 0.7rem 2.5rem; font-size:14px;">
+      تحميل المزيد ↓
+    </button>
+  </div>
+
+</div>
+</div>
+
+<!-- EQUIPMENT -->
+<section id="المعدات">
+  <p class="section-tag">المعدات</p>
+  <h2 class="section-title">أدواتي</h2>
+  <div class="section-line"></div>
+  <div class="equipment-grid">
+    <div class="eq-card">
+      <span class="eq-icon">📱</span>
+      <div class="eq-name">الموبايل</div>
+      <div class="eq-desc">POCO F1 Mobile - GT master edition </div>
+    </div>
+    <div class="eq-card">
+      <span class="eq-icon">🔭</span>
+      <div class="eq-name">العدسات</div>
+      <div class="eq-desc">واسعة الزاوية — تيليفوتو — ماكرو. كل موقف يستاهل عدسته.</div>
+    </div>
+    <div class="eq-card">
+      <span class="eq-icon">🎛️</span>
+      <div class="eq-name">التعديل</div>
+      <div class="eq-desc">Lightroom Mobile </div>
+    </div>
+    <div class="eq-card">
+      <span class="eq-icon">🦯</span>
+      <div class="eq-name">الملحقات</div>
+      <div class="eq-desc">Gimbal — Clip Lens.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<section id="الفلاتر">
+  <p class="section-tag">الفلاتر</p>
+  <h2 class="section-title">الأساليب البصرية</h2>
+  <div class="section-line"></div>
+  <div class="filters-grid">
+    <div class="filter-card">
+      <div class="filter-app">Lightroom</div>
+      <div class="filter-name">Dark Moody</div>
+      <div class="filter-desc">ألوان داكنة دافئة، ظلال عميقة، يناسب الـ street photography.</div>
+    </div>
+    <div class="filter-card">
+      <div class="filter-app">VSCO</div>
+      <div class="filter-name">Cinematic</div>
+      <div class="filter-desc">إحساس سينمائي كلاسيكي مع حبوب ناعمة وألوان محايدة.</div>
+    </div>
+    <div class="filter-card">
+      <div class="filter-app">Snapseed</div>
+      <div class="filter-name">Portrait Glow</div>
+      <div class="filter-desc">إضاءة ناعمة على الوجه مع خلفية هادئة ومحسوبة.</div>
+    </div>
+    <div class="filter-card">
+      <div class="filter-app">Manual Edit</div>
+      <div class="filter-name">Golden Hour</div>
+      <div class="filter-desc">تعزيز الذهبي والبرتقالي لصور الغروب والفجر.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer>
+  <div class="contact-section">
+    <div class="contact-left">
+      <p class="section-tag">التواصل</p>
+      <h2 class="section-title">تواصل معي</h2>
+      <div class="section-line"></div>
+      <p>إذا عندك مشروع، تريد تعاون، أو بس تبي تتكلم عن التصوير — أنا هنا.</p>
+    </div>
+    <div class="contact-links-col">
+      <div class="contact-links">
+
+        <!-- WhatsApp -->
+        <a class="contact-link" href="https://wa.me/9647830396114" target="_blank" rel="noopener">
+          <span class="contact-link-icon">💬</span>
+          <div class="contact-link-info">
+            <div class="contact-link-label">WhatsApp</div>
+            <div class="contact-link-val">تواصل معي مباشرة</div>
+          </div>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+
+        <!-- Instagram -->
+        <a class="contact-link" href="https://instagram.com/7.dr2" target="_blank" rel="noopener">
+          <span class="contact-link-icon">📸</span>
+          <div class="contact-link-info">
+            <div class="contact-link-label">Instagram</div>
+            <div class="contact-link-val">@7.dr2</div>
+          </div>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+
+      </div>
+
+      <!-- Location -->
+      <div class="location-box" style="margin-top:1rem;">
+        <span class="location-icon">📍</span>
+        <div class="location-text">
+          <strong>ذي قار، العراق</strong><br>
+          Iraq — Dhiqar
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span class="footer-bar-name">Hussain.jabbar © 2025</span>
+    <span class="footer-bar-copy">Mobile Photography — Dhiqar, Iraq</span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-rating" onclick="event.stopPropagation()">
+    <div class="lb-stars" id="lbStars"></div>
+    <div class="lb-rating-info" id="lbInfo">كن أول من يقيّم</div>
+  </div>
+</div>
+
+<script type="module">
+
+// ===== FIREBASE RATING SYSTEM =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// 🔧 ضع هنا إعدادات Firebase بتاعتك
+const firebaseConfig = {
+  apiKey: "AIzaSyAY0t_s2KbCJmnu8ssFmgqMLR65Ec9J2lE",
+  authDomain: "hussain-j-k.firebaseapp.com",
+  databaseURL: "https://hussain-j-k-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hussain-j-k",
+  storageBucket: "hussain-j-k.firebasestorage.app",
+  messagingSenderId: "409590222411",
+  appId: "1:409590222411:web:2d6ca1d4b21ab98f1e07ce"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+var currentPhoto = null;
+
+function safeKey(name) {
+  return name.replace(/[.#$/\[\]]/g, '_');
+}
+
+function renderStars(container, avg, total, isLarge) {
+  var cls = isLarge ? 'lb-star' : 'star';
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    var lit = avg >= i ? ' lit' : (avg >= i - 0.5 ? ' lit' : '');
+    html += '<span class="' + cls + lit + '" data-val="' + i + '">★</span>';
+  }
+  container.innerHTML = html;
+  var stars = container.querySelectorAll('.' + cls);
+  stars.forEach(function(s) {
+    s.addEventListener('mouseover', function() {
+      var v = parseInt(this.dataset.val);
+      stars.forEach(function(x, i) { x.classList.toggle('hov', i < v); x.classList.toggle('lit', false); });
+    });
+    s.addEventListener('mouseout', function() {
+      stars.forEach(function(x) { x.classList.remove('hov'); });
+      updateStarDisplay(container, avg, isLarge);
+    });
+    s.addEventListener('click', function() {
+      var v = parseInt(this.dataset.val);
+      var photo = isLarge ? currentPhoto : container.closest('.gallery-item').querySelector('[id^="stars-"]').id.replace('stars-','');
+      submitRating(photo, v);
+    });
+  });
+}
+
+function updateStarDisplay(container, avg, isLarge) {
+  var cls = isLarge ? 'lb-star' : 'star';
+  container.querySelectorAll('.' + cls).forEach(function(s, i) {
+    s.classList.toggle('lit', avg >= i + 1);
+  });
+}
+
+function loadRatings() {
+  var items = document.querySelectorAll('.gallery-item');
+  items.forEach(function(item) {
+    var starsEl = item.querySelector('.stars-row');
+    var infoEl = item.querySelector('.rating-info');
+    if (!starsEl) return;
+    var id = starsEl.id.replace('stars-', '');
+    var key = safeKey(id);
+    onValue(ref(db, 'ratings/' + key), function(snap) {
+      var data = snap.val();
+      var avg = data ? (data.total / data.count) : 0;
+      var count = data ? data.count : 0;
+      renderStars(starsEl, avg, count, false);
+      infoEl.textContent = count > 0 ? ('★ ' + avg.toFixed(1) + ' (' + count + ' تقييم)') : 'كن أول من يقيّم';
+    });
+  });
+}
+
+function loadLightboxRating(photo) {
+  var lbStars = document.getElementById('lbStars');
+  var lbInfo = document.getElementById('lbInfo');
+  var key = safeKey(photo);
+  onValue(ref(db, 'ratings/' + key), function(snap) {
+    var data = snap.val();
+    var avg = data ? (data.total / data.count) : 0;
+    var count = data ? data.count : 0;
+    renderStars(lbStars, avg, count, true);
+    lbInfo.textContent = count > 0 ? ('المتوسط: ' + avg.toFixed(1) + ' من 5 — ' + count + ' تقييم') : 'كن أول من يقيّم';
+  }, { onlyOnce: true });
+}
+
+function submitRating(photo, val) {
+  var key = safeKey(photo);
+  runTransaction(ref(db, 'ratings/' + key), function(current) {
+    if (current === null) return { total: val, count: 1 };
+    return { total: current.total + val, count: current.count + 1 };
+  });
+}
+
+// Load on page ready
+document.addEventListener('DOMContentLoaded', loadRatings);
+
+// Nav scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Gallery - show 3 per cat initially
+var SHOW_PER_CAT = 3;
+var currentCat = 'all';
+
+function getVisible(cat) {
+  return Array.from(document.querySelectorAll('.gallery-item')).filter(function(i) {
+    return cat === 'all' || i.dataset.cat === cat;
+  });
+}
+
+function applyLimit() {
+  var counts = {};
+  Array.from(document.querySelectorAll('.gallery-item')).forEach(function(item) {
+    var cat = item.dataset.cat;
+    if (currentCat !== 'all' && item.dataset.cat !== currentCat) {
+      item.style.display = 'none';
+      return;
+    }
+    var key = currentCat === 'all' ? cat : 'selected';
+    counts[key] = (counts[key] || 0) + 1;
+    item.style.display = counts[key] <= SHOW_PER_CAT ? '' : 'none';
+  });
+  var total = getVisible(currentCat).length;
+  var shown = currentCat === 'all'
+    ? Object.values(counts).filter(function(v) { return v <= SHOW_PER_CAT; }).length
+    : Math.min(counts['selected'] || 0, SHOW_PER_CAT);
+  var wrap = document.getElementById('loadMoreWrap');
+  if (wrap) wrap.style.display = total > SHOW_PER_CAT ? '' : 'none';
+}
+
+function loadMore() {
+  SHOW_PER_CAT += 3;
+  applyLimit();
+}
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.gf-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  currentCat = cat;
+  SHOW_PER_CAT = 3;
+  applyLimit();
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', function() {
+  applyLimit();
+});
+
+// Lightbox
+function openLightbox(src) {
+  if (!src || src === window.location.href) return;
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
+window.filterGallery = filterGallery;
+window.loadMore = loadMore;
+</script>
+</body>
+</html>
